@@ -24,5 +24,7 @@ namespace CurrencyConverter_Static
         {
             InitializeComponent();
         }
+
+        
     }
 }
