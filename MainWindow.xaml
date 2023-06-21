@@ -18,22 +18,22 @@
         <Border Grid.Row="2" Width="800" CornerRadius="10" BorderThickness="5">
             <Border.BorderBrush>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                    <GradientStop Color="#0b8d46" Offset="0.0"/>
-                    <GradientStop Color="#4d86f9" Offset="1"/>
+                    <GradientStop Color="#4d86f9" Offset="0"/>
+                    <GradientStop Color="#0b8d46" Offset="1"/>
                 </LinearGradientBrush>
             </Border.BorderBrush>
             <Rectangle Grid.Row="2">
                 <Rectangle.Fill>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <GradientStop Color="#0b8d46" Offset="0.0"/>
-                        <GradientStop Color="#4d86f9" Offset="1"/>
+                        <GradientStop Color="#4d86f9" Offset="0"/>
+                        <GradientStop Color="#0b8d46" Offset="1"/>
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
         </Border>
         <StackPanel Grid.Row="0" Width="1000" Height="50" Orientation="Horizontal">
             <Label Content="Currency Converter" Width="1000" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                   FontSize="25" Foreground="#0b8d46"/>
+                   FontSize="25" Foreground="#4d86f9"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" Height="80" Width="1000">
             <Label Height="40" Width="1000" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Converted Currency"
@@ -63,8 +63,8 @@
                     Foreground="White" FontSize="20" Style="{StaticResource ButtonRound}">
                 <Button.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <GradientStop Color="#0b8d46" Offset="0"/>
-                        <GradientStop Color="#4d86f9" Offset="1"/>
+                        <GradientStop Color="#4d86f9" Offset="0"/>
+                        <GradientStop Color="#0b8d46" Offset="1"/>
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
@@ -77,6 +77,9 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Height="150" Width="800" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+            <Image Height="150" Width="150" Source="/Images/Logo.png" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="325 0"/>
         </StackPanel>
     </Grid>
 </Window>
