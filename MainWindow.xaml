@@ -158,8 +158,24 @@
                             <DataGridTextColumn x:Name="Id" Header="Id" Width="100" CanUserResize="False" Visibility="Hidden"
                                                 Binding="{Binding Path=Id}"/>
                             <DataGridTemplateColumn Header="" Width="70" IsReadOnly="True" DisplayIndex="0">
-                            
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <fa:ImageAwesome Icon="Edit" ToolTip="Edit" Width="20" Height="20" x:Name="Revise"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="" Width="70" IsReadOnly="True" DisplayIndex="1">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <fa:ImageAwesome Icon="Remove" ToolTip="Delete" Width="20" Height="20" x:Name="Delete"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn x:Name="Amount" Header="Amount" Width="100" CanUserResize="False" CanUserReorder="False"
+                                                Binding="{Binding Path=Amount}" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="CurrencyName" Header="Currency Name" Width="*" MinWidth="20"
+                                                CanUserResize="False" CanUserReorder="False" Binding="{Binding Path=CurrencyName}" 
+                                                IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
