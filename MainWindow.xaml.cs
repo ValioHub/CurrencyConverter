@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -22,35 +24,57 @@ namespace CurrencyConverter_Static
     /// </summary>
     public partial class MainWindow : Window
     {
+        SqlConnection sqlCon = new SqlConnection();
+        SqlCommand sqlCmd = new SqlCommand();
+        SqlDataAdapter sqlDa = new SqlDataAdapter();
+        private int CurrencyID = 0;
+        private double FromAmount = 0;
+        private double ToAmount = 0;
         public MainWindow()
         {
             InitializeComponent();
             BindCurrency();
         }
+        // CRUD - Create,Read,Update,Delete
+        public void mycon() 
+        {
+            String Connection = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            sqlCon = new SqlConnection(Connection);
+            sqlCon.Open();
+        }
         private void BindCurrency()
         {
-            DataTable dtCurrency = new DataTable();
-            dtCurrency.Columns.Add("Text");
-            dtCurrency.Columns.Add("Value");
+            mycon();
+            DataTable dt = new DataTable();
+            // Query to get data from DB
+            sqlCmd = new SqlCommand("select Id, CurrencyName from Currency_Master", sqlCon);
+            sqlCmd.CommandType = CommandType.Text;
+            sqlDa = new SqlDataAdapter(sqlCmd);
+            sqlDa.Fill(dt);
+            // Object for DataRow
+            DataRow newDataRow = dt.NewRow();
+            // Give value to Id
+            newDataRow["Id"] = 0;
+            // Give value to CurrencyName
+            newDataRow["CurrencyName"] = "Select";
+            // Insert a new row in dt
+            dt.Rows.InsertAt(newDataRow, 0);
 
-            // Add rows in the DataTable'
-            dtCurrency.Rows.Add("Select", 0);
-            dtCurrency.Rows.Add("USD", 1);
-            dtCurrency.Rows.Add("EUR", 0.910247);
-            dtCurrency.Rows.Add("GBP", 0.783139);
-            dtCurrency.Rows.Add("INR", 81.938793);
-            dtCurrency.Rows.Add("AUD", 1.471434);
-            dtCurrency.Rows.Add("CAD", 1.316428);
-            dtCurrency.Rows.Add("SGD", 1.340416);
+            // If dt is not null and rows count > 0
+            if (dt != null && dt.Rows.Count > 0) 
+            {
+                // Add DB data to FROM and TO comboboxes
+                cmbFromCurrency.ItemsSource = dt.DefaultView;
+                cmbToCurrency.ItemsSource = dt.DefaultView;
+            }
+            sqlCon.Close();
 
-            cmbFromCurrency.ItemsSource = dtCurrency.DefaultView;
-            cmbFromCurrency.DisplayMemberPath = "Text";
-            cmbFromCurrency.SelectedValuePath = "Value";
+
+            cmbFromCurrency.DisplayMemberPath = "CurrencyName";
+            cmbFromCurrency.SelectedValuePath = "Id";
             cmbFromCurrency.SelectedIndex = 0;
-
-            cmbToCurrency.ItemsSource = dtCurrency.DefaultView;
-            cmbToCurrency.DisplayMemberPath = "Text";
-            cmbToCurrency.SelectedValuePath = "Value";
+            cmbToCurrency.DisplayMemberPath = "CurrencyName";
+            cmbToCurrency.SelectedValuePath = "Id";
             cmbToCurrency.SelectedIndex = 0;
         }
         private void Convert_Click(object sender, RoutedEventArgs e)
