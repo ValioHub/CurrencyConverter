@@ -152,5 +152,63 @@ namespace CurrencyConverter_Static
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (txtAmount.Text == null || txtAmount.Text.Trim() == "")
+                {
+                    MessageBox.Show("Please enter amount", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    txtAmount.Focus();
+                    return;
+                }
+                else if (txtCurrencyName.Text == null || txtCurrencyName.Text.Trim() == "") 
+                {
+                    MessageBox.Show("Please enter currency name", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    txtCurrencyName.Focus();
+                    return;
+                }
+                else
+                {
+                    if (CurrencyID > 0)
+                    {
+                        if (MessageBox.Show("Are you sure you want to update?", "Information", MessageBoxButton.YesNo,
+                            MessageBoxImage.Question) == MessageBoxResult.Yes)
+                        {
+                            mycon();
+                            DataTable dt = new DataTable();
+                            sqlCmd = new SqlCommand("UPDATE Currency_Master SET Amount = @Amount, CurrencyName = @CurrencyName WHERE Id = @Id", sqlCon);
+                            sqlCmd.CommandType = CommandType.Text;
+                            sqlCmd.Parameters.AddWithValue("@Id", CurrencyID);
+                            sqlCmd.Parameters.AddWithValue("@Amount", txtAmount.Text);
+                            sqlCmd.Parameters.AddWithValue("@CurrencyName", txtCurrencyName.Text);
+                            sqlCmd.ExecuteNonQuery();
+                            sqlCon.Close();
+                            MessageBox.Show("Data updated successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                    else
+                    {
+                        if (MessageBox.Show("Are you sure you want to save?", "Information", MessageBoxButton.YesNo,
+                            MessageBoxImage.Question) == MessageBoxResult.Yes)
+                        {
+                            mycon();
+                            sqlCmd = new SqlCommand("INSERT INTO Currency_Master(Amount, CurrencyName) VALUES(@Amount, @CurrencyName)", sqlCon);
+                            sqlCmd.CommandType = CommandType.Text;
+                            sqlCmd.Parameters.AddWithValue("@Amount", txtAmount.Text);
+                            sqlCmd.Parameters.AddWithValue("@CurrencyName", txtCurrencyName.Text);
+                            sqlCmd.ExecuteNonQuery();
+                            sqlCon.Close();
+                            MessageBox.Show("Data saved successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message,"Error",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+        }
     }
 }
