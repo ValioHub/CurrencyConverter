@@ -47,7 +47,7 @@ namespace CurrencyConverter_Static
             mycon();
             DataTable dt = new DataTable();
             // Query to get data from DB
-            sqlCmd = new SqlCommand("select Id, CurrencyName from Currency_Master", sqlCon);
+            sqlCmd = new SqlCommand("SELECT Id, CurrencyName FROM Currency_Master", sqlCon);
             sqlCmd.CommandType = CommandType.Text;
             sqlDa = new SqlDataAdapter(sqlCmd);
             sqlDa.Fill(dt);
@@ -203,12 +203,50 @@ namespace CurrencyConverter_Static
                             MessageBox.Show("Data saved successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
+                    CleanMaster();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message,"Error",MessageBoxButton.OK,MessageBoxImage.Error);
             }
+        }
+        // Clear all input in Currency Master tab
+        private void CleanMaster()
+        {
+            try
+            {
+                txtAmount.Text = string.Empty;
+                txtCurrencyName.Text = string.Empty;
+                btnSave.Content = "Save";
+                GetData();
+                CurrencyID = 0;
+                BindCurrency();
+                txtAmount.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        // Bind Data in DataGrid view
+        private void GetData()
+        {
+            mycon();
+            DataTable dt = new DataTable();
+            sqlCmd = new SqlCommand("SELECT * FROM Currency_Master", sqlCon);
+            sqlCmd.CommandType = CommandType.Text;
+            sqlDa = new SqlDataAdapter(sqlCmd);
+            sqlDa.Fill(dt);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                dgvCurrency.ItemsSource = dt.DefaultView;
+            }
+            else
+            {
+                dgvCurrency.ItemsSource = null;
+            }
+            sqlCon.Close();
         }
     }
 }
