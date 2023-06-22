@@ -120,14 +120,14 @@
                             Width="800" Margin="100, 0">
                     <Label Height="40" Width="180" Content="Enter Amount : " Margin="180 0 0 0" VerticalContentAlignment="Bottom" 
                            Foreground="White" FontSize="20"/>
-                    <Label Height="40" Width="180" Content="Currency Nmae : " Margin="60 0 0 0" VerticalContentAlignment="Bottom" 
+                    <Label Height="40" Width="180" Content="Currency Name : " Margin="60 0 0 0" VerticalContentAlignment="Bottom" 
                            Foreground="White" FontSize="20"/>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="60"
                             Width="800">
                     <TextBox Name="txtAmount" Width="200" Height="30" Margin="180 0 0 0" PreviewTextInput="NumberValidationTextBox" 
                              FontSize="18" VerticalContentAlignment="Center" VerticalAlignment="Top"/>
-                    <TextBox Name="txtCurrencyName" Width="200" Height="30" Margin="40 0 0 0" PreviewTextInput="NumberValidationTextBox" 
+                    <TextBox Name="txtCurrencyName" Width="200" Height="30" Margin="40 0 0 0" 
                              FontSize="18" VerticalContentAlignment="Center" VerticalAlignment="Top" MaxLength="50"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Height="60" Width="1000" Orientation="Horizontal">

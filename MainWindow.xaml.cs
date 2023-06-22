@@ -34,6 +34,8 @@ namespace CurrencyConverter_Static
         {
             InitializeComponent();
             BindCurrency();
+            BindCurrency();
+            GetData();
         }
         // CRUD - Create,Read,Update,Delete
         public void mycon() 
@@ -122,8 +124,8 @@ namespace CurrencyConverter_Static
             else
             {
                 // "FROM" value multiply with value from TextBox and the total dividet with "TO" value
-                ConvertedValue = (double.Parse(txtCurrency.Text))
-                    / double.Parse(cmbFromCurrency.SelectedValue.ToString()) * double.Parse(cmbToCurrency.SelectedValue.ToString());
+                ConvertedValue = (double.Parse(cmbFromCurrency.SelectedValue.ToString())
+                    * double.Parse(txtCurrency.Text)) / double.Parse(cmbToCurrency.SelectedValue.ToString());
                 // Show converted currency in the label
                 // N2 place 00 after dot(.)
                 lblCurrency.Content = cmbToCurrency.Text + " " + ConvertedValue.ToString("N2");
@@ -149,7 +151,7 @@ namespace CurrencyConverter_Static
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
+            Regex regex = new Regex("[^0-9,.]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
@@ -247,6 +249,63 @@ namespace CurrencyConverter_Static
                 dgvCurrency.ItemsSource = null;
             }
             sqlCon.Close();
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CleanMaster();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void dvgCurrency_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            try
+            {
+                DataGrid dtGrid = (DataGrid)sender;
+                DataRowView dtRowSelected = dtGrid.CurrentItem as DataRowView;
+                if (dtRowSelected != null)
+                {
+                    if (dgvCurrency.Items.Count > 0)
+                    {
+                        if (dtGrid.SelectedCells.Count > 0)
+                        {
+                            CurrencyID = Int32.Parse(dtRowSelected["Id"].ToString());
+                            if (dtGrid.SelectedCells[0].Column.DisplayIndex == 0)
+                            {
+                                txtAmount.Text = dtRowSelected["Amount"].ToString();
+                                txtCurrencyName.Text = dtRowSelected["CurrencyName"].ToString();
+                                btnSave.Content = "Update";
+                            }
+                            if (dtGrid.SelectedCells[0].Column.DisplayIndex == 1)
+                            {
+                                if (MessageBox.Show("Are you sure you want to delete?", "Information", MessageBoxButton.YesNo,
+                                    MessageBoxImage.Question) == MessageBoxResult.Yes)
+                                {
+                                    mycon();
+                                    DataTable dt = new DataTable();
+                                    sqlCmd = new SqlCommand("DELETE FROM Currency_Master WHERE Id = @Id", sqlCon);
+                                    sqlCmd.CommandType = CommandType.Text;
+                                    sqlCmd.Parameters.AddWithValue("@Id", CurrencyID);
+                                    sqlCmd.ExecuteNonQuery();
+                                    sqlCon.Close();
+                                    MessageBox.Show("Data deleted successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    CleanMaster();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
