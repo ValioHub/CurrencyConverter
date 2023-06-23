@@ -49,14 +49,14 @@ namespace CurrencyConverter_Static
             mycon();
             DataTable dt = new DataTable();
             // Query to get data from DB
-            sqlCmd = new SqlCommand("SELECT Id, CurrencyName FROM Currency_Master", sqlCon);
+            sqlCmd = new SqlCommand("SELECT Amount, CurrencyName FROM Currency_Master", sqlCon);
             sqlCmd.CommandType = CommandType.Text;
             sqlDa = new SqlDataAdapter(sqlCmd);
             sqlDa.Fill(dt);
             // Object for DataRow
             DataRow newDataRow = dt.NewRow();
             // Give value to Id
-            newDataRow["Id"] = 0;
+            newDataRow["Amount"] = 0;
             // Give value to CurrencyName
             newDataRow["CurrencyName"] = "Select";
             // Insert a new row in dt
@@ -73,10 +73,10 @@ namespace CurrencyConverter_Static
 
 
             cmbFromCurrency.DisplayMemberPath = "CurrencyName";
-            cmbFromCurrency.SelectedValuePath = "Id";
+            cmbFromCurrency.SelectedValuePath = "Amount";
             cmbFromCurrency.SelectedIndex = 0;
             cmbToCurrency.DisplayMemberPath = "CurrencyName";
-            cmbToCurrency.SelectedValuePath = "Id";
+            cmbToCurrency.SelectedValuePath = "Amount";
             cmbToCurrency.SelectedIndex = 0;
         }
         private void Convert_Click(object sender, RoutedEventArgs e)
