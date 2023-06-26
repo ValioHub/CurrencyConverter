@@ -185,6 +185,12 @@
                 </StackPanel>
             </Grid>
         </TabItem>
+        <TabItem Header="APIConvert">
+            <UserControl Name="APIConvert">
+                <local:APIConvert/>
+            </UserControl>
+        </TabItem>
+        
     </TabControl>
     
 </Window>
